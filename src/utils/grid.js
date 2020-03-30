@@ -28,8 +28,8 @@ const createNode = (col, row) => {
   return {
     col,
     row,
-    isStart: false,// row === START_NODE_ROW && col === START_NODE_COL,
-    isFinish: false,// row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+    isStart: false,
+    isFinish: false,
     distance: Infinity,
     isVisited: false,
     isWall: false,
