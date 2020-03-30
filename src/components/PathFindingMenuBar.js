@@ -1,11 +1,22 @@
 import React from 'react';
 
-export default function PathFindingMenuBar({ selectStartNode, selectFinishNode, toggleWallDraw }) {
+export default function PathFindingMenuBar({
+  selectStartNode,
+  selectFinishNode,
+  toggleWallDraw,
+  isStartClicked,
+  isFinishClicked,
+  isDrawWall
+}) {
+  const startCss = isStartClicked ? 'btn btn-secondary btn-active' : 'btn btn-secondary';
+  const finishCss = isFinishClicked ? 'btn btn-secondary btn-active' : 'btn btn-secondary';
+  const drawCss = isDrawWall ? 'btn btn-secondary btn-active' : 'btn btn-secondary';
+
   return (
     <div className="btn-group menu-bar" role="group">
-      <button onClick={selectStartNode} type="button" className="btn btn-secondary">Select Start</button>
-      <button onClick={selectFinishNode} type="button" className="btn btn-secondary">Select End</button>
-      <button onClick={toggleWallDraw} type="button" className="btn btn-secondary">Draw Wall</button>
+      <button onClick={selectStartNode} type="button" className={`${startCss}`}>Select Start</button>
+      <button onClick={selectFinishNode} type="button" className={`${finishCss}`}>Select End</button>
+      <button onClick={toggleWallDraw} type="button" className={`${drawCss}`}>Draw Wall</button>
     </div>
   );
 }

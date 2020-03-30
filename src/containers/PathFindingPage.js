@@ -116,13 +116,16 @@ export class PathFindingPage extends Component {
   };
 
   render() {
-    const { grid } = this.state;
+    const { grid, isDrawWall, isFinishClicked, isStartClicked } = this.state;
     return (
       <>
         <PathFindingMenuBar 
           selectStartNode={this.selectStartNode.bind(this)}
           selectFinishNode={this.selectFinishNode.bind(this)}
-          toggleWallDraw={this.toggleWallDraw.bind(this)} />
+          toggleWallDraw={this.toggleWallDraw.bind(this)}
+          isDrawWall={isDrawWall}
+          isFinishClicked={isFinishClicked}
+          isStartClicked={isStartClicked} />
         <div className="grid">
           {grid.map((node, index) => {
             return (

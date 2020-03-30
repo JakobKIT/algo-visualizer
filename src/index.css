@@ -31,3 +31,10 @@
   justify-content: center !important;
   display: flex !important;
 }
+
+.btn-active {
+  outline: none !important;
+  color: white !important;
+  background-color: green !important;
+  box-shadow: none !important;
+}
