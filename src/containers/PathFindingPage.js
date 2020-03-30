@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PathFindingMenuBar from '../components/PathFindingMenuBar';
 import Node from '../components/Node';
-import { initializeGrid, setFinishAndStart } from '../utils/grid';
+import { initializeGrid, setFinishAndStart, setWall } from '../utils/grid';
 
 export class PathFindingPage extends Component {
   constructor() {
     super();
     this.state = {
       grid: [],
+      isDrawWall: false,
       isMousePressed: false,
       isFinishClicked: false,
       isStartClicked: false,
@@ -34,6 +35,8 @@ export class PathFindingPage extends Component {
     this.setState({
       isStartClicked: true,
       isFinishClicked: false,
+      isDrawWall: false,
+      isMousePressed: false,
     });
   };
 
@@ -41,24 +44,58 @@ export class PathFindingPage extends Component {
     this.setState({
       isFinishClicked: true,
       isStartClicked: false,
+      isDrawWall: false,
+      isMousePressed: false,
     });
   };
 
   toggleWallDraw() {
     this.setState({
-      isMousePressed: !this.state.isMousePressed
+      isDrawWall: true,
+      isFinishClicked: false,
+      isStartClicked: false,
+      isMousePressed: false,
     });
   };
 
+  handleMouseDown(col, row) {
+    let { grid, isDrawWall } = this.state;
+
+    if (!isDrawWall) return;
+
+    grid = setWall(grid, row, col);
+    this.setState({
+      isMousePressed: true,
+      grid
+    });
+  };
+
+  handleMouseOver(col, row) {
+    let { grid, isDrawWall, isMousePressed } = this.state;
+
+    if (!isDrawWall || !isMousePressed) return;
+
+    grid = setWall(grid, row, col);
+    this.setState({
+      grid
+    });
+  }
+
   onNodeClick(col, row) {
-    let { start, finish, isStartClicked, isFinishClicked } = this.state;
-    let newGrid = initializeGrid();
+    let { grid, start, finish, isStartClicked, isFinishClicked, isDrawWall } = this.state;
+    if (isDrawWall) {
+      return;
+    }
+
+    let newGrid = grid;
     if (isStartClicked) {
+      newGrid[start.row][start.col].isStart = false;
       start = {
         col,
         row
       };
     } else if (isFinishClicked) {
+      newGrid[finish.row][finish.col].isFinish = false;
       finish = {
         col,
         row
@@ -72,7 +109,11 @@ export class PathFindingPage extends Component {
       start,
       finish
     });
-  }
+  };
+
+  handleMouseUp() {
+    this.setState({isMousePressed: false});
+  };
 
   render() {
     const { grid } = this.state;
@@ -87,7 +128,7 @@ export class PathFindingPage extends Component {
             return (
               <div className="row" key={index}>
                 {node.map((field, fieldIndex) => {
-                  const { row, col, isStart, isFinish } = field;
+                  const { row, col, isStart, isFinish, isWall } = field;
                   return (
                     <Node 
                       key={fieldIndex}
@@ -95,7 +136,11 @@ export class PathFindingPage extends Component {
                       row={row}
                       isStart={isStart}
                       isFinish={isFinish}
+                      isWall={isWall}
                       onNodeClick={this.onNodeClick.bind(this)}
+                      handleMouseDown={this.handleMouseDown.bind(this)}
+                      handleMouseUp={this.handleMouseUp.bind(this)}
+                      handleMouseOver={this.handleMouseOver.bind(this)}
                     />
                   )
                 })}
@@ -106,12 +151,18 @@ export class PathFindingPage extends Component {
       </>
     )
   };
-}
+};
 
 function mapStateToProps(state) {
   return {
     state
   };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+
+  };
 }
 
-export default connect(mapStateToProps, null)(PathFindingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(PathFindingPage);

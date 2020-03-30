@@ -17,6 +17,13 @@ export const setFinishAndStart = (grid, start, finish) => {
   return grid;
 };
 
+export const setWall = (grid, row, col) => {
+  if (!grid[row][col].isFinish && !grid[row][col].isStart) {
+    grid[row][col].isWall = !grid[row][col].isWall;
+  }
+  return grid;
+};
+
 const createNode = (col, row) => {
   return {
     col,
