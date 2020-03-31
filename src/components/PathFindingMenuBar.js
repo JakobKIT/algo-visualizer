@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function PathFindingMenuBar({
+  reset,
   selectStartNode,
   selectFinishNode,
   toggleWallDraw,
@@ -16,6 +17,7 @@ export default function PathFindingMenuBar({
   return (
     <div className="container">
       <div className="btn-group menu-bar" role="group">
+        <button onClick={reset} type="button" className="ml-2 btn btn-primary">Reset</button>
         <button onClick={selectStartNode} type="button" className={`${startCss}`}>Select Start</button>
         <button onClick={selectFinishNode} type="button" className={`${finishCss}`}>Select End</button>
         <button onClick={toggleWallDraw} type="button" className={`${drawCss}`}>Draw Wall</button>

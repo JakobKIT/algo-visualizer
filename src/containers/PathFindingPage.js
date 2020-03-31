@@ -10,6 +10,7 @@ export class PathFindingPage extends Component {
     super();
     this.state = {
       grid: [],
+      animate: false,
       isDrawWall: false,
       isMousePressed: false,
       isFinishClicked: false,
@@ -26,6 +27,10 @@ export class PathFindingPage extends Component {
   };
 
   componentDidMount() {
+    this.reset();
+  };
+
+  reset() {
     const { start, finish } = this.state;
     let grid = initializeGrid();
     grid = setFinishAndStart(grid, start, finish);
@@ -33,6 +38,8 @@ export class PathFindingPage extends Component {
   };
 
   selectStartNode(event) {
+    const { animate } = this.state;
+    if (animate) return;
     this.setState({
       isStartClicked: true,
       isFinishClicked: false,
@@ -42,6 +49,8 @@ export class PathFindingPage extends Component {
   };
 
   selectFinishNode(event) {
+    const { animate } = this.state;
+    if (animate) return;
     this.setState({
       isFinishClicked: true,
       isStartClicked: false,
@@ -51,6 +60,8 @@ export class PathFindingPage extends Component {
   };
 
   toggleWallDraw() {
+    const { animate } = this.state;
+    if (animate) return;
     this.setState({
       isDrawWall: true,
       isFinishClicked: false,
@@ -60,6 +71,7 @@ export class PathFindingPage extends Component {
   };
 
   handleMouseDown(col, row) {
+    
     let { grid, isDrawWall } = this.state;
 
     if (!isDrawWall) return;
@@ -128,6 +140,14 @@ export class PathFindingPage extends Component {
   }
 
   animate(visited, path) {
+    this.setState({
+      isMousePressed: false,
+      isFinishClicked: false,
+      isStartClicked: false, 
+      isDrawWall: false,
+      animate: true,
+    });
+
     for (let i = 0; i <= visited.length; i++) {
       if (i === visited.length) {
         setTimeout(() => {
@@ -149,6 +169,7 @@ export class PathFindingPage extends Component {
         document.getElementById(`node-${current.row}-${current.col}`).className = 'node node-shortest-path';
       }, 50 * i);
     }
+    this.setState({ animate: false });
   }
 
   render() {
@@ -156,6 +177,7 @@ export class PathFindingPage extends Component {
     return (
       <>
         <PathFindingMenuBar 
+          reset={this.reset.bind(this)}
           selectStartNode={this.selectStartNode.bind(this)}
           selectFinishNode={this.selectFinishNode.bind(this)}
           toggleWallDraw={this.toggleWallDraw.bind(this)}
