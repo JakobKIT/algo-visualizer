@@ -21,6 +21,7 @@ export default function HomePage({
 
   return (
     <div 
+      id={`node-${row}-${col}`}
       className={`node ${extraClassName}`}
       onClick={() => onNodeClick(col, row)}
       onMouseDown={() => handleMouseDown(col, row)}

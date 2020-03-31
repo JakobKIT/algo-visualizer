@@ -6,7 +6,8 @@ export default function PathFindingMenuBar({
   toggleWallDraw,
   isStartClicked,
   isFinishClicked,
-  isDrawWall
+  isDrawWall,
+  startDijkstra
 }) {
   const startCss = isStartClicked ? 'btn btn-secondary btn-active' : 'btn btn-secondary';
   const finishCss = isFinishClicked ? 'btn btn-secondary btn-active' : 'btn btn-secondary';
@@ -17,6 +18,7 @@ export default function PathFindingMenuBar({
       <button onClick={selectStartNode} type="button" className={`${startCss}`}>Select Start</button>
       <button onClick={selectFinishNode} type="button" className={`${finishCss}`}>Select End</button>
       <button onClick={toggleWallDraw} type="button" className={`${drawCss}`}>Draw Wall</button>
+      <button onClick={startDijkstra} type="button" className="btn btn-secondary">Start Dijkstra</button>
     </div>
   );
 }

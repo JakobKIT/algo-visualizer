@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PathFindingMenuBar from '../components/PathFindingMenuBar';
 import Node from '../components/Node';
 import { initializeGrid, setFinishAndStart, setWall } from '../utils/grid';
+import { dijkstra, getShortestPathArray } from '../utils/dijkstra';
 
 export class PathFindingPage extends Component {
   constructor() {
@@ -115,6 +116,41 @@ export class PathFindingPage extends Component {
     this.setState({isMousePressed: false});
   };
 
+  startDijkstra() {
+    const { grid, start, finish } = this.state;
+    const startNode = grid[start.row][start.col];
+    const finishNode = grid[finish.row][finish.col];
+
+    const visitedNodes = dijkstra(grid, startNode);
+    const shortestPath = getShortestPathArray(finishNode);
+
+    this.animate(visitedNodes, shortestPath);
+  }
+
+  animate(visited, path) {
+    for (let i = 0; i <= visited.length; i++) {
+      if (i === visited.length) {
+        setTimeout(() => {
+          this.animatePath(path);
+        }, 10 * i);
+        return;
+      }
+      setTimeout(() => {
+        const current = visited[i];
+        document.getElementById(`node-${current.row}-${current.col}`).className = 'node node-visited';
+      }, 10 * i);
+    }
+  }
+
+  animatePath(path) {
+    for (let i = 0; i < path.length; i++) {
+      setTimeout(() => {
+        const current = path[i];
+        document.getElementById(`node-${current.row}-${current.col}`).className = 'node node-shortest-path';
+      }, 50 * i);
+    }
+  }
+
   render() {
     const { grid, isDrawWall, isFinishClicked, isStartClicked } = this.state;
     return (
@@ -125,7 +161,8 @@ export class PathFindingPage extends Component {
           toggleWallDraw={this.toggleWallDraw.bind(this)}
           isDrawWall={isDrawWall}
           isFinishClicked={isFinishClicked}
-          isStartClicked={isStartClicked} />
+          isStartClicked={isStartClicked}
+          startDijkstra={this.startDijkstra.bind(this)} />
         <div className="grid">
           {grid.map((node, index) => {
             return (
