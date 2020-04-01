@@ -24,18 +24,18 @@ export class PathFindingPage extends Component {
         col: 40
       }
     };
-  };
+  }
 
   componentDidMount() {
     this.reset();
-  };
+  }
 
   reset() {
     const { start, finish } = this.state;
     let grid = initializeGrid();
     grid = setFinishAndStart(grid, start, finish);
     this.setState({grid});
-  };
+  }
 
   selectStartNode(event) {
     const { animate } = this.state;
@@ -46,7 +46,7 @@ export class PathFindingPage extends Component {
       isDrawWall: false,
       isMousePressed: false,
     });
-  };
+  }
 
   selectFinishNode(event) {
     const { animate } = this.state;
@@ -57,7 +57,7 @@ export class PathFindingPage extends Component {
       isDrawWall: false,
       isMousePressed: false,
     });
-  };
+  }
 
   toggleWallDraw() {
     const { animate } = this.state;
@@ -68,7 +68,7 @@ export class PathFindingPage extends Component {
       isStartClicked: false,
       isMousePressed: false,
     });
-  };
+  }
 
   handleMouseDown(col, row) {
     
@@ -81,7 +81,7 @@ export class PathFindingPage extends Component {
       isMousePressed: true,
       grid
     });
-  };
+  }
 
   handleMouseOver(col, row) {
     let { grid, isDrawWall, isMousePressed } = this.state;
@@ -122,11 +122,11 @@ export class PathFindingPage extends Component {
       start,
       finish
     });
-  };
+  }
 
   handleMouseUp() {
     this.setState({isMousePressed: false});
-  };
+  }
 
   startDijkstra() {
     const { grid, start, finish } = this.state;
@@ -212,19 +212,15 @@ export class PathFindingPage extends Component {
         </div>
       </>
     )
-  };
+  }
 };
 
-function mapStateToProps(state) {
-  return {
-    state
-  };
-};
+const mapStateToProps = (state) => ({
+  state
+});
 
-function mapDispatchToProps(dispatch) {
-  return {
+const mapDispatchToProps = (dispatch) => ({
 
-  };
-}
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PathFindingPage);
